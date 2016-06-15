@@ -1,14 +1,14 @@
 {
-  "name": "cdcchen/aliyun-dm-client",
+  "name": "cdcchen/aliyun-client",
   "description": "alidayu development sdk",
   "keywords": ["alidayu"],
-  "homepage": "https://github.com/cdcchen/aliyun-dm-client",
-  "time": "2016-06-07 16:45:01",
+  "homepage": "https://github.com/cdcchen/aliyun-client",
+  "time": "2016-06-15 22:23:01",
   "license": "BSD-4-Clause",
   "support": {
-    "issues": "https://github.com/cdcchen/aliyun-dm-client/issues",
-    "wiki": "https://github.com/cdcchen/aliyun-dm-client/wiki",
-    "source": "https://github.com/cdcchen/aliyun-dm-client"
+    "issues": "https://github.com/cdcchen/aliyun-client/issues",
+    "wiki": "https://github.com/cdcchen/aliyun-client/wiki",
+    "source": "https://github.com/cdcchen/aliyun-client"
   },
   "authors": [
     {
