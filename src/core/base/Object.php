@@ -9,13 +9,24 @@
 namespace cdcchen\aliyun\core\base;
 
 
+/**
+ * Class Object
+ * @package cdcchen\aliyun\core\base
+ */
 class Object
 {
+    /**
+     * @return string
+     */
     public static function className()
     {
         return get_called_class();
     }
 
+    /**
+     * @param string $name
+     * @return bool
+     */
     public function hasMethod($name)
     {
         return method_exists($this, $name);

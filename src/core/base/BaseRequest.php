@@ -30,12 +30,13 @@ abstract class BaseRequest extends Object
     public function __construct()
     {
         $this->init();
+        $this->setDefaultParams();
     }
 
     /**
      * init
      */
-    public function init()
+    protected function init()
     {
     }
 
@@ -90,7 +91,6 @@ abstract class BaseRequest extends Object
      */
     public function beforeExecute()
     {
-        $this->setDefaultParams();
         $this->prepare();
         $this->setParam('Action', $this->action);
         $this->checkRequireParams();
