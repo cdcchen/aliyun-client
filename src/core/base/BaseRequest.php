@@ -90,9 +90,17 @@ abstract class BaseRequest extends Object
      */
     public function beforeExecute()
     {
+        $this->setDefaultParams();
         $this->prepare();
         $this->setParam('Action', $this->action);
         $this->checkRequireParams();
+    }
+
+    /**
+     * Set default params
+     */
+    protected function setDefaultParams()
+    {
     }
 
     /**

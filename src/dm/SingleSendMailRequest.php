@@ -19,7 +19,7 @@ use cdcchen\aliyun\core\helpers\ClientHelper;
 class SingleSendMailRequest extends BaseRequest
 {
     use VersionTrait;
-    
+
     const ADDRESS_TYPE_RAND = 0;
     const ADDRESS_TYPE_SEND = 1;
 
@@ -101,6 +101,15 @@ class SingleSendMailRequest extends BaseRequest
     public function setTextBody($value)
     {
         return $this->setParam('TextBody', $value);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function setDefaultParams()
+    {
+        $this->setAddressType(self::ADDRESS_TYPE_RAND)
+             ->setReplyToAddress(false);
     }
 
     /**

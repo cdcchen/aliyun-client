@@ -18,7 +18,7 @@ use cdcchen\aliyun\core\base\BaseRequest;
 class BatchSendMailRequest extends BaseRequest
 {
     use VersionTrait;
-    
+
     const ADDRESS_TYPE_RAND = 0;
     const ADDRESS_TYPE_SEND = 1;
 
@@ -61,6 +61,23 @@ class BatchSendMailRequest extends BaseRequest
     public function setTagName($value)
     {
         return $this->setParam('TagName', $value);
+    }
+
+    /**
+     * @param string $value
+     * @return $this
+     */
+    public function setAddressType($value)
+    {
+        return $this->setParam('AddressType', $value);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function setDefaultParams()
+    {
+        $this->setAddressType(self::ADDRESS_TYPE_RAND);
     }
 
     /**
