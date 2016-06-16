@@ -10,10 +10,10 @@ namespace cdcchen\aliyun\core;
 
 
 use cdcchen\aliyun\core\base\BaseRequest;
-use cdcchen\aliyun\core\base\Object;
-use cdcchen\aliyun\core\profile\ClientProfileInterface;
 use cdcchen\aliyun\core\base\ClientException;
+use cdcchen\aliyun\core\base\Object;
 use cdcchen\aliyun\core\base\ServerException;
+use cdcchen\aliyun\core\profile\ClientProfileInterface;
 use cdcchen\net\curl\Client as CUrlClient;
 use cdcchen\net\curl\HttpResponse;
 
@@ -49,6 +49,11 @@ class Client extends Object
      * @var string
      */
     private $_restUrl = 'dm.aliyuncs.com';
+
+    /**
+     * @var array
+     */
+    private $_filters = [];
 
     /**
      * BaseCUrlClient constructor.
@@ -224,6 +229,26 @@ class Client extends Object
         return $this->setParams($params);
     }
 
+    public function setFilter(callable $callback)
+    {
+        $this->_filters[] = $callback;
+        return $this;
+    }
+
+    public function getFilters()
+    {
+        return $this->_filters;
+    }
+
+    private function applyFilters(HttpResponse &$response)
+    {
+        foreach ($this->_filters as $filter) {
+            $response = call_user_func($filter, $response);
+        }
+
+        return $this;
+    }
+
     /**
      * @param BaseRequest $request
      * @return Response
@@ -237,13 +262,14 @@ class Client extends Object
         $this->prepare();
         /* @var HttpResponse $response */
         $response = CUrlClient::post($this->getRestUrl(), $this->_params)->send();
+        $this->applyFilters($response);
         return $this->afterExecute($response);
     }
 
     /**
      * @param HttpResponse $response
      * @return Response
-     * @throws ClientException
+     * @throws ClientException | ServerException
      */
     protected function afterExecute(HttpResponse $response)
     {
@@ -259,7 +285,7 @@ class Client extends Object
     /**
      * @param $data
      * @param $httpStatus
-     * @throws ClientException
+     * @throws ClientException | ServerException
      */
     private static function throwException($data, $httpStatus)
     {
@@ -269,7 +295,8 @@ class Client extends Object
             $throw = new ServerException($data['Message'], $data['Code'], $httpStatus);
         }
 
-        throw $throw->setHostId($data['HostId'])->setRequestId($data['RequestId']);
+        $throw->setHostId($data['HostId'])->setRequestId($data['RequestId']);
+        throw $throw;
     }
 
     /**
