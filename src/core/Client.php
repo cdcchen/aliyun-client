@@ -229,17 +229,28 @@ class Client extends Object
         return $this->setParams($params);
     }
 
+    /**
+     * @param callable $callback
+     * @return $this
+     */
     public function setFilter(callable $callback)
     {
         $this->_filters[] = $callback;
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function getFilters()
     {
         return $this->_filters;
     }
 
+    /**
+     * @param HttpResponse $response
+     * @return $this
+     */
     private function applyFilters(HttpResponse &$response)
     {
         foreach ($this->_filters as $filter) {
@@ -256,6 +267,10 @@ class Client extends Object
      */
     public function execute(BaseRequest $request)
     {
+        if (!$this->beforeExecute($request)) {
+            return false;
+        }
+
         $request->beforeExecute();
         $this->mergeRequestParams($request);
 
@@ -264,6 +279,15 @@ class Client extends Object
         $response = CUrlClient::post($this->getRestUrl(), $this->_params)->send();
         $this->applyFilters($response);
         return $this->afterExecute($response);
+    }
+
+    /**
+     * @param BaseRequest $request
+     * @return bool
+     */
+    protected function beforeExecute(BaseRequest $request)
+    {
+        return true;
     }
 
     /**
