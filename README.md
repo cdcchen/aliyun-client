@@ -9,7 +9,7 @@
 
 ## 接口列表：
 
-- 邮件推送
+- [邮件推送接口文档](//github.com/cdcchen/aliyun-client/wiki)
 
 
 
