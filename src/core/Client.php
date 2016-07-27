@@ -262,7 +262,7 @@ class Client extends Object
 
     /**
      * @param BaseRequest $request
-     * @return Response
+     * @return bool|Response
      * @throws \cdcchen\net\curl\RequestException
      */
     public function execute(BaseRequest $request)
@@ -275,8 +275,13 @@ class Client extends Object
         $this->mergeRequestParams($request);
 
         $this->prepare();
+        $httpRequest = CUrlClient::post($this->getRestUrl(), $this->_params);
+        if ($this->_https) {
+            $httpRequest->setSSL();
+        }
+
         /* @var HttpResponse $response */
-        $response = CUrlClient::post($this->getRestUrl(), $this->_params)->send();
+        $response = $httpRequest->send();
         $this->applyFilters($response);
         return $this->afterExecute($response);
     }
